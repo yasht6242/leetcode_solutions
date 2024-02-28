@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        
+        int n = ratings.size();
+        vector <int> candies(n,1);
+        //pass1 to distribute candies to the right to  ensure child with higher rating gets more candies
+        for(int i =1;i<n;++i){
+            if(ratings[i]>ratings[i-1]){ //comparision with previous child
+                candies[i]=candies[i-1]+1;
+            }
+        }
+        //pass2 to distribute candeis to the left to ensure that children with higher ratings receive more candies than their neighbors to the right, while still satisfying the requirement of giving at least one candy to each child.
+        for(int i = n-2;i>=0;--i){
+           if(ratings[i]>ratings[i+1]){
+               candies[i] = max(candies[i],candies[i+1]+1);
+           }
+        }
+        int totalCandies = 0;
+        for(int  candy: candies){
+            totalCandies+=candy;
+        }
+        return totalCandies;
+    }
+};
