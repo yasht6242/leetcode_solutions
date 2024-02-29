@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.empty()){
+            return "";
+        }
+        sort(strs.begin(),strs.end());
+        string first = strs.front();
+        string last = strs.back();
+        size_t common_length = 0;
+        while(common_length < first.size() && first[common_length] == last[common_length]){
+            common_length++;
+        }
+        return first.substr(0,common_length);
+    }
+};
