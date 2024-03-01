@@ -1,0 +1,18 @@
+  class Solution {
+public:
+    string reverseWords(string s) {
+        vector<string> words;
+        istringstream iss(s);
+        for(string word;iss>>word;){
+            words.push_back(word);
+        }
+        string reversed;
+        for(auto it=words.rbegin();it!=words.rend();it++){
+            reversed += *it;
+            if(it!=words.rend()-1){
+                reversed+=" ";
+            }
+        }
+        return reversed;
+    }
+};
