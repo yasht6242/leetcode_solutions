@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+     vector<int> result;
+
+    if (s.empty() || words.empty()) {
+        return result;
+    }
+
+    int wordLength = words[0].size();
+    int totalLength = wordLength * words.size();
+    int numWords = words.size();
+
+    unordered_map<string, int> wordCount;
+    for (const string& word : words) {
+        wordCount[word]++;
+    }
+
+    for (int i = 0; i < wordLength; ++i) {
+        int left = i;
+        int right = i;
+        int wordsFound = 0;
+        unordered_map<string, int> currentWindow;
+
+        while (right + wordLength <= s.size()) {
+            string currentWord = s.substr(right, wordLength);
+            right += wordLength;
+
+            if (wordCount.find(currentWord) != wordCount.end()) {
+                currentWindow[currentWord]++;
+                wordsFound++;
+
+                while (currentWindow[currentWord] > wordCount[currentWord]) {
+                    string leftWord = s.substr(left, wordLength);
+                    currentWindow[leftWord]--;
+                    wordsFound--;
+
+                    left += wordLength;
+                }
+
+                if (wordsFound == numWords) {
+                    result.push_back(left);
+                }
+            } else {
+                currentWindow.clear();
+                wordsFound = 0;
+                left = right;
+            }
+        }
+    }
+
+    return result;
+    }
+};
