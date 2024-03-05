@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        unordered_map<char, std::string> charToStringMap;
+        unordered_map<string, char> stringToCharMap;
+    
+        istringstream ss(s);
+        string word;
+        int i = 0;
+    
+        for (char c : pattern) {
+            if (!(ss >> word)) return false; // If there are fewer words than characters in the pattern
+            
+            if (charToStringMap.find(c) == charToStringMap.end() && stringToCharMap.find(word) ==       stringToCharMap.end()) {
+                charToStringMap[c] = word;
+                stringToCharMap[word] = c;
+            } else {
+                if (charToStringMap[c] != word || stringToCharMap[word] != c) {
+                    return false;
+                }
+            }
+            ++i;
+        }
+        
+        // If there are more words than characters in the pattern
+        if (ss >> word) return false;
+        
+        return true;
+    }
+};
