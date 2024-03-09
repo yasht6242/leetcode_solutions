@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> fillStack;
+        for(char c : s){
+            if(c=='(' || c=='[' || c=='{'){
+                fillStack.push(c);
+            }else{
+                if(fillStack.empty()){
+                   return false;
+                }
+                char openBracket = fillStack.top();
+                fillStack.pop(); 
+                if ((c==')' && openBracket!='(') ||
+                    (c==']' && openBracket!='[') ||
+                    (c=='}' && openBracket!='{')) {
+                    return false;
+                }
+            }
+        }
+        return fillStack.empty();
+    }
+};
