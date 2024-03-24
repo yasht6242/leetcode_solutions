@@ -1,0 +1,51 @@
+class LRUCache {
+    private:
+    int capacity;
+    unordered_map<int,pair<int,list<int>::iterator>> cache;
+    list<int> lruList;
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+    }
+    
+    int get(int key) {
+        if (cache.find(key) != cache.end()) {
+            // Key found in cache, update its position in the LRU list
+            lruList.erase(cache[key].second);
+            lruList.push_front(key);
+            cache[key].second = lruList.begin();
+            return cache[key].first;
+        } else {
+            // Key not found in cache
+            return -1;
+        }
+    }
+    
+    void put(int key, int value) {
+         if (cache.find(key) != cache.end()) {
+            // Key already exists, update its value and position in the LRU list
+            cache[key].first = value;
+            lruList.erase(cache[key].second);
+            lruList.push_front(key);
+            cache[key].second = lruList.begin();
+        } else {
+            // Key does not exist, check capacity and evict if necessary
+            if (cache.size() >= capacity) {
+                int evictedKey = lruList.back();
+                lruList.pop_back();
+                cache.erase(evictedKey);
+            }
+
+            // Add the new key-value pair to the cache and LRU list
+            lruList.push_front(key);
+            cache[key] = {value, lruList.begin()};
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
